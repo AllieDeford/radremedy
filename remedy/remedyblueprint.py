@@ -600,6 +600,9 @@ def review(resource_id):
             provider: The provider to leave a review for.
     """
     resource = resource_with_id(resource_id)
-    return render_template("create-review.html", resource=resource)
+    if request.method == 'POST':
+        return resource_redirect(resource_id)
+    elif request.method == 'GET':  
+        return render_template("create-review.html", resource=resource)
 
 

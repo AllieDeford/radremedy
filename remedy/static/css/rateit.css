@@ -99,23 +99,23 @@
 
 span.bigstars span.rateit-range
 {
-    background: url('star-white32.png');
+    background: url('../img/star-grey.png');
     height: 32px;
 }
 
 span.bigstars span.rateit-hover
 {
-    background: url(star-gold32.png);
+    background: url('../img/star-pink.png');
 }
 
 span.bigstars span.rateit-selected
 {
-    background: url(star-red32.png);
+    background: url('../img/star-pink.png');
 }
 
 span.bigstars span.rateit-reset
 {
-    background: url(star-black32.png);
+    background: url('../img/star-purple.png');
     width: 32px;
     height: 32px;
 
@@ -123,5 +123,5 @@ span.bigstars span.rateit-reset
 
 span.bigstars span.rateit-reset:hover
 {
-    background: url('star-white32.png');
+    background: url('../img/star-grey.png');
 }
