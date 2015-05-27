@@ -585,4 +585,21 @@ def submit_error(resource_id) :
     elif request.method == 'GET':
         return render_template('error.html', resource=resource, form=form)
 
+@remedy.route('/review/<resource_id>/', methods=['GET', 'POST'])
+@login_required
+def review(resource_id):
+    """
+    Lets user leave a review for a specific resource.
+
+    Args:
+        resource_id: The ID of the resource to leave a review for.
+
+    Returns:
+        A reivew page (via create-review.html).
+        This template is provided with the following variables:
+            provider: The provider to leave a review for.
+    """
+    resource = resource_with_id(resource_id)
+    return render_template("create-review.html", resource=resource)
+
 

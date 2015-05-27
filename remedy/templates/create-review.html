@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}RAD Remedy - New Review{% endblock %}
+{% block head_text %}New Review{% endblock %}
+{% block head %}
+<link href="{{ url_for('static', filename='css/rateit.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="new-review">
+	<h2>New Review for {{ resource.name }}</h2>
+	<form role="form" method="post" action="{{ url_for('remedy.new_review') }}">
+		<input type="hidden" name="resource_id" value="{{ resource.id }}">
+		<div class="form-group">
+			<label for="intakeStars">Intake Experience&nbsp;&nbsp;&nbsp;&nbsp;</label>
+			<input type="range" value="0" step="1" id="intakeStars">
+			<span class="rateit bigstars" data-rateit-backingfld="#intakeStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
+			&nbsp;&nbsp;
+			<span onMouseOver="show('intakeTips')" onMouseOut="hide('intakeTips')" class="glyphicon glyphicon-question-sign"></span>
+			<div class="tip" id="intakeTips" hidden>Things to Consider:
+										<br>Where the intake forms inclusive? 
+										<br>Did the staff address your concerns? 
+										<br>Did they use the correct name?</div>
+		</div>
+		<div class="form-group">
+			<label for="providerStars">Provider Experience&nbsp;</label>
+			<input type="range" value="0" step="1" id="providerStars">
+			<span class="rateit bigstars" data-rateit-backingfld="#providerStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
+			&nbsp;&nbsp;
+			<span onMouseOver="show('providerTips')" onMouseOut="hide('providerTips')" class="glyphicon glyphicon-question-sign"></span>
+			<div class="tip" id="providerTips" hidden>Things to Consider:
+													<br>Did they respect your identities? 
+													<br>Where they knowledgable about your identities? 
+													<br>Were they interested in learning about your identities? </div>         
+		</div>
+		<div class="form-group">
+			<label for="staffStars">Staff Experience&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
+		    <input type="range" value="0" step="1" id="staffStars">
+			<span class="rateit bigstars" data-rateit-backingfld="#staffStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
+			&nbsp;&nbsp;
+			<span onMouseOver="show('staffTips')" onMouseOut="hide('staffTips')" class="glyphicon glyphicon-question-sign"></span>
+			<div class="tip" id="staffTips" hidden>Things to Consider:
+												<br>Where they respectful of you and your identities? 
+												<br>Did they use the correct name and pronouns? </div>
+		</div>    		
+		<div class="form-group">
+			<label for="comment">Comments</label>
+			<span id="helpBlock" class="help-block">Leave any other comments about the provider here!</span>
+			<textarea class="form-control" rows="3" id="comment"></textarea>
+			<input type="submit" value="Submit" class="btn pull-right">
+		</div>
+		
+	</form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/jquery.rateit.min.js') }}"></script>
+<script>
+	function show(id) {
+		document.getElementById(id).style.display = 'block';
+	}
+	function hide(id) {
+		document.getElementById(id).style.display = 'none';
+	}
+</script>
+{% endblock %}
