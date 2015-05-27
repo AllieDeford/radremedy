@@ -234,7 +234,7 @@
     </p>
     {% endif %}
 
-    {% include 'experiences.html' %}
+    <a href="{{ url_for('remedy.review', resource_id=provider.id) }}" type="button" class="btn btn-default btn-lg" role="button">Leave a review!</a>
     </div>
   </div>
 
