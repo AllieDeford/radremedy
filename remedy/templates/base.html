@@ -181,9 +181,9 @@
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/prefixfree.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-<!--     {{ macros.remedy_script_include() }}
+    {{ macros.remedy_script_include() }}
     {{ macros.gmaps_script_include() }}
-    {{ macros.gmaps_script(false, 'quick-addr', 'quick-lat', 'quick-long') }} -->
+    {{ macros.gmaps_script(false, 'quick-addr', 'quick-lat', 'quick-long') }}
     {% block scripts %}{% endblock %}
 
   </body>
