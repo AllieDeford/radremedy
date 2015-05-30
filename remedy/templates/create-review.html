@@ -8,14 +8,15 @@
 {% block content %}
 <div class="new-review">
 	<h2>New Review for {{ resource.name }}</h2>
+
 	<form role="form" method="post" action="{{ url_for('remedy.review', resource_id=resource.id) }}">
 		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 		<input type="hidden" name="resource_id" value="{{ resource.id }}">
 		<div class="form-group">
+			<input type="hidden" id="intakeValue" value="0">
 			<label for="intakeStars">Intake Experience&nbsp;&nbsp;&nbsp;&nbsp;</label>
-			<input type="range" value="0" step="1" id="intakeStars">
-			<span class="rateit bigstars" data-rateit-backingfld="#intakeStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
-			&nbsp;&nbsp;
+			<span id="intakeStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
+			&nbsp;&nbsp;<input type="checkbox" id="intakeNA" onchange="markNotApplicable('#intakeStars', 'intakeValue')">N/A
 			<span onMouseOver="show('intakeTips')" onMouseOut="hide('intakeTips')" class="glyphicon glyphicon-question-sign"></span>
 			<div class="tip" id="intakeTips" hidden>Things to Consider:
 										<br>Where the intake forms inclusive? 
@@ -23,10 +24,10 @@
 										<br>Did they use the correct name?</div>
 		</div>
 		<div class="form-group">
+			<input type="hidden" id="providerValue" value="0">
 			<label for="providerStars">Provider Experience&nbsp;</label>
-			<input type="range" value="0" step="1" id="providerStars">
-			<span class="rateit bigstars" data-rateit-backingfld="#providerStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
-			&nbsp;&nbsp;
+			<span id="providerStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
+			&nbsp;&nbsp;<input type="checkbox" id="providerNA" onchange="markNotApplicable('#providerStars', 'providerValue')">N/A
 			<span onMouseOver="show('providerTips')" onMouseOut="hide('providerTips')" class="glyphicon glyphicon-question-sign"></span>
 			<div class="tip" id="providerTips" hidden>Things to Consider:
 													<br>Did they respect your identities? 
@@ -34,10 +35,10 @@
 													<br>Were they interested in learning about your identities? </div>         
 		</div>
 		<div class="form-group">
+			<input type="hidden" id="staffValue" value="0">
 			<label for="staffStars">Staff Experience&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
-		    <input type="range" value="0" step="1" id="staffStars">
-			<span class="rateit bigstars" data-rateit-backingfld="#staffStars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false"></span>
-			&nbsp;&nbsp;
+			<span id="staffStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
+			&nbsp;&nbsp;<input type="checkbox" id="providerNA" onchange="markNotApplicable('#staffStars', 'staffValue')">N/A
 			<span onMouseOver="show('staffTips')" onMouseOut="hide('staffTips')" class="glyphicon glyphicon-question-sign"></span>
 			<div class="tip" id="staffTips" hidden>Things to Consider:
 												<br>Where they respectful of you and your identities? 
@@ -58,11 +59,20 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/jquery.rateit.min.js') }}"></script>
 <script>
+	$("#intakeStars").bind('rated', function (event, value) { document.getElementById("intakeValue").value = value;});
+	$("#providerStars").bind('rated', function (event, value) { document.getElementById("providerValue").value = value;});
+	$("#staffStars").bind('rated', function (event, value) { document.getElementById("staffValue").value = value;});
+
 	function show(id) {
 		document.getElementById(id).style.display = 'block';
 	}
 	function hide(id) {
 		document.getElementById(id).style.display = 'none';
+	}
+	function markNotApplicable(id, hiddenValue) {
+		$(id).rateit('value', 0); 
+		$(id).rateit('readonly',!$(id).rateit('readonly')); 
+		document.getElementById(hiddenValue).value = 0; 
 	}
 </script>
 {% endblock %}
