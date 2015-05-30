@@ -13,7 +13,7 @@
 		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 		<input type="hidden" name="resource_id" value="{{ resource.id }}">
 		<div class="form-group">
-			<input type="hidden" id="intakeValue" value="0">
+			<input type="hidden" name="intakeValue" id="intakeValue" value="0">
 			<label for="intakeStars">Intake Experience&nbsp;&nbsp;&nbsp;&nbsp;</label>
 			<span id="intakeStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
 			&nbsp;&nbsp;<input type="checkbox" id="intakeNA" onchange="markNotApplicable('#intakeStars', 'intakeValue')">N/A
@@ -24,7 +24,7 @@
 										<br>Did they use the correct name?</div>
 		</div>
 		<div class="form-group">
-			<input type="hidden" id="providerValue" value="0">
+			<input type="hidden" name="providerValue" id="providerValue" value="0">
 			<label for="providerStars">Provider Experience&nbsp;</label>
 			<span id="providerStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
 			&nbsp;&nbsp;<input type="checkbox" id="providerNA" onchange="markNotApplicable('#providerStars', 'providerValue')">N/A
@@ -35,7 +35,7 @@
 													<br>Were they interested in learning about your identities? </div>         
 		</div>
 		<div class="form-group">
-			<input type="hidden" id="staffValue" value="0">
+			<input type="hidden" name="staffValue" id="staffValue" value="0">
 			<label for="staffStars">Staff Experience&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
 			<span id="staffStars" class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" data-rateit-resetable="false" data-rateit-step="1"></span>
 			&nbsp;&nbsp;<input type="checkbox" id="providerNA" onchange="markNotApplicable('#staffStars', 'staffValue')">N/A
@@ -47,7 +47,7 @@
 		<div class="form-group">
 			<label for="comment">Comments</label>
 			<span id="helpBlock" class="help-block">Leave any other comments about the provider here!</span>
-			<textarea class="form-control" rows="3" id="comment"></textarea>
+			<textarea class="form-control" rows="3" name="comment" id="comment"></textarea>
 			<input type="submit" value="Submit" class="btn pull-right">
 		</div>
 		

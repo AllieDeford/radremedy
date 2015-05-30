@@ -390,8 +390,6 @@ def resource_search(page):
     )
 
 
-@remedy.route('/review', methods=['POST'])
-@login_required
 def new_review():
     """
     This function handles the creation of new reviews,
@@ -601,8 +599,47 @@ def review(resource_id):
     """
     resource = resource_with_id(resource_id)
     if request.method == 'POST':
+        formData = request.form
         return resource_redirect(resource_id)
     elif request.method == 'GET':  
         return render_template("create-review.html", resource=resource)
 
+def new_review(formData):
+    """
+    This function handles the creation of new reviews,
+    if the review submitted is valid then we create
+    a record in the database linking it to a Resource
+    and a User.
+
+    When something goes wrong in the validation the User
+    is redirected to the home page. We should better
+    discuss form UI stuff.
+
+    If all is OK the user is redirected to the provider
+    been reviewed.
+    """
+
+    new_r = Review(form.rating.data, form.description.data,
+               Resource.query.get(form.provider.data), 
+               user=current_user)
+
+    db.session.add(new_r)
+
+    # Flush the session so we get an ID
+    db.session.flush()
+
+    # See if we have other existing reviews
+    existing_reviews = Review.query. \
+        filter(Review.id != new_r.id). \
+        filter(Review.resource_id == new_r.resource_id). \
+        filter(Review.user_id == new_r.user_id). \
+        all()
+
+    # If we do, mark all those old reviews as old
+    if len(existing_reviews) > 0:
+        for old_review in existing_reviews:
+            old_review.is_old_review = True
+            old_review.new_review_id = new_r.id
+
+    db.session.commit()
 
