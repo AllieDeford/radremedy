@@ -181,24 +181,24 @@
 
     {% if reviews|count > 0 %}
       {% for review in reviews %}
-        <div>
-          <p>
-            <span class="badge">
-              {{ macros.rating_text(review.rating) }}
-            </span>        
-            by {{ review.user.display_name }}
-          </p>
-          <blockquote>
-            {{ review.text }}
-          </blockquote>
-          {% if current_user.admin or current_user.id == review.user_id %}
-          <p>
-            <a href="{{ url_for('remedy.delete_review', review_id = review.id) }}">
-              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-            </a>
-          </p>
-          {% endif %}
-          {% if review.old_reviews_filtered|count > 0 %}
+        <div class="review">
+              <span class="ratingBox"> 
+                <div class="rating"><span class="ratingNumber">{{ review.intake_rating }}</span><span class="ratingTitle">Intake</span></div>
+                <div class="rating"><span class="ratingNumber">{{ review.rating }}</span><span class="ratingTitle">Provider</span></div>
+                <div class="rating"><span class="ratingNumber">{{ review.staff_rating }}</span><span class="ratingTitle">Staff</span></div>
+              </span>
+              <span class="reviewDetail"> 
+                  <div class="displayName">{{ review.user.display_name }} says... </div> 
+                  <div class="reviewText">{{ review.text }}</div> 
+                    {% if current_user.admin or current_user.id == review.user_id %}
+                      <a href="{{ url_for('remedy.delete_review', review_id = review.id) }}" class="del-btn">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                      </a>
+                    {% endif %}
+              </span>
+        </div>
+
+<!--           {% if review.old_reviews_filtered|count > 0 %}
             <div class="panel">
               <div class="panel-heading">
                 Previous Reviews by {{ review.user.display_name }}
@@ -225,8 +225,7 @@
                 {% endfor %}
               </div>
             </div>
-          {% endif %}
-        </div>
+          {% endif %} -->
       {% endfor %}
     {% else %}
     <p>
