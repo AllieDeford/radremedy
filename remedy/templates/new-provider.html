@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %}RAD Remedy - New Provider{% endblock %}
+{% block head_text %}Submit a New Provider{% endblock %}
+
+{% block head %}
+<meta name="robots" content="noindex, nofollow">
+<link href="{{ url_for('static', filename='css/review.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% macro rating_description(rating) %}
+{% if rating == "5" %}
+5 - I had a very good experience
+{% elif rating == "4" %}
+4 - I had a good experience
+{% elif rating == "3" %}
+3 - I had a neutral experience
+{% elif rating == "2" %}
+2 - I had a bad experience
+{% elif rating == "1" %}
+1 - I had a very bad experience
+{% else %}
+N/A
+{% endif %}
+{% endmacro %}
+
+{% macro radio_set(radiofield) %}
+{# Do this in reverse order because every one will be floated right #}
+{% for r in radiofield|reverse %}
+{{ r }}
+<label for="{{ r.id }}" data-val="{{ r.label.text }}" title="{{ rating_description(r.label.text) }}">
+  {{ r.label.text }}
+</label>
+{% endfor %}
+{% endmacro %}
+
+{% macro popover(id) %}
+<button id="{{ id }}" class="btn btn-link rad-popover" type="button">
+  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+  <span class="sr-only">Things to Consider</span>
+</button> 
+{% endmacro %}
+
+{% block content %}
+<h2>Submit a New Provider</h2>
+
+<p class="lead">
+	Do you have a really great provider that folks ought to know about? Use this form to tell us about them and share it with other community members.If you don't know the answer to one of the sections, that is A-OK - we will do outreach later to fill those parts in! But do be sure to scroll down to the Experience section and let us know about your interactions with the provider. This will also serve as the provider's first review!
+</p>
+<h3>The Provider</h3>
+<form action="{{ url_for('remedy.new_provider') }}" method="post" role="form">
+	{{ form.csrf_token }}
+
+	<div class="form-group">
+    {{ form.provider_name.label }}
+    {{ form.provider_name(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.organization_name.label}}
+		{{ form.organization_name(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.description.label }}
+		<p class="help-block">{{ form.description.description }}</p>
+		{{ form.description(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.npi.label }}
+		<p class="help-block">{{ form.npi.description }}</p>
+		{{ form.npi(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.street_address.label }}
+		<p class="help-block">{{ form.street_address.description }}</p>
+		{{ form.street_address(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.city.label }}
+		{{ form.city(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.state.label }}
+		{{ form.state(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.zipcode.label }}
+		{{ form.zipcode(class_="form-control form-remedy") }}
+	</div>
+		
+	<div class="form-group">
+		{{ form.country.label }}
+		{{ form.country(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.phone_number.label }}
+		{{ form.phone_number(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.fax_number.label }}
+		{{ form.fax_number(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.email.label }}
+		{{ form.email(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.website.label }}
+		{{ form.website(class_="form-control form-remedy") }}
+	</div>
+
+	<h3>Your Experience</h3> 
+
+	<div class="form-group clearfix">
+	    <div>
+	      {{ form.rating.label }}
+	      {{ popover("rating-popover") }}
+	    </div>
+	    <div class="rating">
+	      {{ radio_set(form.rating) }}
+	    </div>
+	</div>
+
+	<div class="form-group clearfix">
+	    <div>
+	      {{ form.intake_rating.label }}
+	      {{ popover("intake-popover") }}
+	    </div>
+	    <div class="rating">
+	      {{ radio_set(form.intake_rating) }}
+	    </div>
+	</div>
+
+	  <div class="form-group clearfix">
+	    <div>
+	      {{ form.staff_rating.label }}
+	      {{ popover("staff-popover") }}
+	    </div>
+	    <div class="rating">
+	      {{ radio_set(form.staff_rating) }}
+	    </div>
+	  </div>
+
+	  <div class="form-group">
+	    {{ form.comments.label }}
+	    <p id="comments-help" class="help-block">
+	      Leave any other comments about the provider here!
+	    </p>
+	    {{ form.comments(**{"class_": "form-control form-remedy", "aria-describedby": "comments-help", "rows": "3"}) }}
+	  </div>
+
+	<div class="form-group">
+	  {{ form.submit(class_="btn btn-primary") }}
+		<a class="btn" href="{{ url_for('remedy.index') }}">
+			Cancel
+		</a>
+	</div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $(function () {
+    var popoverOptions = {
+      html: true,
+      trigger: 'click',
+      title: 'Things to Consider'
+    };
+
+    $("#intake-popover").popover($.extend({
+      content: '<ul>' +
+        '<li>Were the intake forms inclusive?</li>' +
+        '<li>Did the staff address your concerns?</li>' +
+        '<li>Did they use the correct name?</li></ul>'
+      }, popoverOptions));
+
+    $("#rating-popover").popover($.extend({
+      content: '<ul>' +
+        '<li>Were they respectful of you and your identities?</li>' +
+        '<li>Were they knowledgable about your identities?</li>' +
+        '<li>Were they interested in learning about your identities?</li></ul>'
+      }, popoverOptions));
+
+    $("#staff-popover").popover($.extend({
+      content: '<ul>' +
+        '<li>Were they respectful of you and your identities?</li>' +
+        '<li>Did they use the correct name and pronouns?</li></ul>'
+      }, popoverOptions));
+  }); 
+</script>
+{% endblock %}

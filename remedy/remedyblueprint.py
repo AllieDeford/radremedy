@@ -15,7 +15,7 @@ from pagination import Pagination
 from .remedy_utils import get_ip
 from .email_utils import send_resource_error
 from rad.models import Resource, Review, Category, db
-from rad.forms import ContactForm, ReviewForm, UserSettingsForm
+from rad.forms import ContactForm, ReviewForm, UserSettingsForm, NewProviderForm
 import rad.resourceservice
 import rad.reviewservice
 import rad.searchutils
@@ -714,4 +714,11 @@ def submit_error(resource_id) :
     elif request.method == 'GET':
         return render_template('error.html', resource=resource, form=form)
 
-
+@remedy.route('/new-provider', methods=['GET', 'POST'])
+@login_required
+def new_provider() :
+    form = NewProviderForm()
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash("There are errors!")
+    return render_template('new-provider.html', form=form)

@@ -12,7 +12,7 @@ from flask_wtf import Form
 from wtforms import StringField, TextField, TextAreaField, SubmitField, ValidationError, \
     HiddenField, SelectField, RadioField, DecimalField, IntegerField
 from wtforms.widgets import HiddenInput
-from wtforms.validators import DataRequired, EqualTo, Length, Regexp, Email, Optional, NumberRange
+from wtforms.validators import DataRequired, EqualTo, Length, Regexp, Email, Optional, NumberRange, URL
 
 from .models import Resource, User
 
@@ -159,6 +159,81 @@ class NewProviderForm(Form):
         validators=[
         Optional(), 
         NumberRange(1000000000, 9999999999)])
+    street_address = StringField('Street Address', 
+        description="Formatting: Street # Street Suite # (ex. 5555 N. Main St #2)", 
+        validators=[
+        Optional()])
+    city = StringField('City', 
+        validators=[Optional()])
+    state = SelectField('State', choices=[('AL', 'Alabama'), ('AK', 'Alaska'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('CA', 'California'), ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DE', 'Delaware'), ('FL', 'Florida'), ('GA', 'Georgia'), 
+                ('HI', 'Hawaii'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'), ('IA', 'Iowa'), ('KS', 'Kansas'), ('KY', 'Kentucky'), ('LA', 'Louisiana'), ('ME', 'Maine'), ('MD', 'Maryland'), 
+                ('MA', 'Massachusetts'), ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MS', 'Mississippi'), ('MO', 'Missouri'), ('MT', 'Montana'), ('NE', 'Nebraska'), ('NV', 'Nevada'), ('NH', 'New Hampshire'), ('NJ', 'New Jersey'), 
+                ('NM', 'New Mexico'), ('NY', 'New York'), ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('OH', 'Ohio'), ('OK', 'Oklahoma'), ('OR', 'Oregon'), ('PA', 'Pennsylvania'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'), 
+                ('SD', 'South Dakota'), ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virgina'), ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')])
+    zipcode = StringField('Zip Code', 
+        validators=[
+        Optional(), 
+        Length(5,5)])
+    country = StringField('Country', 
+        validators=[
+        Optional()])
+    phone_number = StringField('Phone Number', 
+        validators=[
+        Optional()])
+    fax_number = StringField('Fax Number', 
+        validators=[
+        Optional()])
+    email = StringField('Email', validators=[
+        Optional(), 
+        Email(), 
+        Length(1, 70)
+    ])
+    website = StringField('Website', validators=[
+        Optional(), 
+        URL(), 
+        Length(1, 70)
+    ])
+
+    
+    rating = RadioField('Provider Experience', choices=[
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    ], validators=[
+        DataRequired()
+    ])
+
+    intake_rating = RadioField('Intake Experience', default='0', choices=[
+        ('0', 'N/A'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    ], validators=[
+        DataRequired()
+    ])
+
+    staff_rating = RadioField('Staff Experience', default='0', choices=[
+        ('0', 'N/A'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    ], validators=[
+        DataRequired()
+    ])
+
+    # this is the text field with more details
+    comments = TextAreaField('Comments', validators=[
+        DataRequired(), 
+        Length(1, 2000)
+    ])
+
+    submit = SubmitField("Submit")
 
 
 
