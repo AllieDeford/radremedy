@@ -10,9 +10,9 @@ from flask.ext.login import current_user
 from flask_wtf import Form
 
 from wtforms import StringField, TextField, TextAreaField, SubmitField, ValidationError, \
-    HiddenField, SelectField, RadioField, DecimalField
+    HiddenField, SelectField, RadioField, DecimalField, IntegerField
 from wtforms.widgets import HiddenInput
-from wtforms.validators import DataRequired, EqualTo, Length, Regexp, Email, Optional
+from wtforms.validators import DataRequired, EqualTo, Length, Regexp, Email, Optional, NumberRange
 
 from .models import Resource, User
 
@@ -144,3 +144,21 @@ class UserSettingsForm(Form):
 
         if existing_user:
             raise ValidationError('A user already exists in the database with that email.')
+
+class NewProviderForm(Form):
+    provider_name = StringField('Provider Name', validators=[DataRequired()])
+    organization_name = StringField('Organization Name', validators=[Optional()])
+    description = TextAreaField('Description', 
+        description="This is a brief description of an organization, such as a mission statement or similar. If this is not obvious when you are trying to fill in the blanks, do not worry about it and leave it blank.", 
+        validators=[
+        Optional(), 
+        Length(1, 2000)
+    ])
+    npi = IntegerField('NPI Number', 
+        description="Write a better description of NPI number", 
+        validators=[
+        Optional(), 
+        NumberRange(1000000000, 9999999999)])
+
+
+
