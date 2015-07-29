@@ -10,11 +10,22 @@ from flask.ext.login import current_user
 from flask_wtf import Form
 
 from wtforms import StringField, TextField, TextAreaField, SubmitField, ValidationError, \
-    HiddenField, SelectField, RadioField, DecimalField, IntegerField
+    HiddenField, SelectField, RadioField, DecimalField, IntegerField, SelectMultipleField, widgets
 from wtforms.widgets import HiddenInput
 from wtforms.validators import DataRequired, EqualTo, Length, Regexp, Email, Optional, NumberRange, URL
+from wtforms.fields.html5 import URLField, TelField
 
 from .models import Resource, User
+
+class MultiCheckboxField(SelectMultipleField):
+    """
+    A multiple-select, except displays a list of checkboxes.
+
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+    """
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 class ContactForm(Form):
     """
@@ -177,10 +188,10 @@ class NewProviderForm(Form):
     country = StringField('Country', 
         validators=[
         Optional()])
-    phone_number = StringField('Phone Number', 
+    phone_number = TelField('Phone Number', 
         validators=[
         Optional()])
-    fax_number = StringField('Fax Number', 
+    fax_number = TelField('Fax Number', 
         validators=[
         Optional()])
     email = StringField('Email', validators=[
@@ -188,10 +199,59 @@ class NewProviderForm(Form):
         Email(), 
         Length(1, 70)
     ])
-    website = StringField('Website', validators=[
+    website = URLField('Website', validators=[
         Optional(), 
-        URL(), 
-        Length(1, 70)
+        URL()
+    ])
+    office_hours = TextAreaField('Office Hours', 
+        description="Specific Formatting: Days: Mon, Tues, Wed, Thurs, Fri, Sat, Sun; Hours: 9 am - 4:30 pm; Extra Specifics: (Walk-ins) (Long Formatting Example: Mon, Tues, Wed - 9 am - 4:30 pm (By Appointment Only); Thurs-Sat - 10:30 am - 7 pm (Appointments and Walk-ins); Sun - Closed)", 
+        validators=[Optional()])
+
+    catagories = MultiCheckboxField('Catagories', choices=[
+        ("Medical Services", "Medical Services (Specify below if possible)"), 
+        ("Primary Care", "Primary Care"),
+        ("Masculinizing Hormones", "Masculinizing Hormones"),
+        ("Feminizing Hormones", "Feminizing Hormones"),
+        ("Puberty Blockers", "Puberty Blockers"),
+        ("Endocrinology", "Endocrinology"),
+        ("Internal Medicine", "Internal Medicine"),
+        ("Pediatrics", "Pediatrics"),
+        ("Obstetrics and Gynecology", "Obstetrics and Gynecology"),
+        ("Reproductive Health", "Reproductive Health"),
+        ("Transition-Related Surgery", "Transition-Related Surgery (Specify below if possible)"),
+        ("HIV/STI Services", "HIV/STI Services"),
+        ("Vision", "Vision"),
+        ("Dental", "Dental"),
+        ("Mental Health Services", "Mental Health Services (Specify below if possible)"),
+        ("Individual Therapy", "Individual Therapy"),
+        ("Group Therapy", "Group Therapy"),
+        ("Family Therapy", "Family Therapy"),
+        ("Child Therapy", "Child Therapy"),
+        ("Adolescent Therapy", "Adolescent Therapy"),
+        ("Psychiatry", "Psychiatry"),
+        ("Addiction and Recovery", "Addiction and Recovery"),
+        ("Support Groups", "Support Groups"),
+        ("Social Groups", "Social Groups"),
+        ("Social Services", "Social Services (Specify below if possible)"),
+        ("Advocacy Organization", "Advocacy Organization"),
+        ("Housing Services", "Housing Services"),
+        ("Legal Services", "Legal Services"),
+        ("Transition-Related Legal Services", "Transition-Related Legal Services"),
+        ("Spiritual Resource", "Spiritual Resource"),
+        ("Electrolysis/Hair Removal", "Electrolysis/Hair Removal"),
+        ("Sexual Assault/Intimate Partner Violence Services", "Sexual Assault/Intimate Partner Violence Services"),
+        ("Complementary and Alternative Medicine", "Complementary and Alternative Medicine"),
+        ("Acupuncture/Acupressure", "Acupuncture/Acupressure"),
+        ("Yoga", "Yoga"),
+        ("Massage", "Massage"),
+        ("Voice Training", "Voice Training")
+        ], 
+        validators=[Optional()])
+    other = TextAreaField('Other', 
+        description="We will eventually be expanding the database to have more information and it would be helpful to have all known information about this provider available. Please list anything that is provided that did not fit into the above questions, such as sliding scale, insurance accepted, other languages spoken, etc. *Formatting: Please separate information with a semi-colon (;) (ex. Sliding Fee; Spanish; Provider does not require a note from a therapist for HRT; Not accepting new patients)*", 
+        validators=[
+        Optional(), 
+        Length(1, 2000)
     ])
 
     

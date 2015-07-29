@@ -119,6 +119,23 @@ N/A
 		{{ form.website(class_="form-control form-remedy") }}
 	</div>
 
+	<div class="form-group">
+		{{ form.office_hours.label }}
+		<p class="help-block">{{ form.office_hours.description }}</p>
+		{{ form.office_hours(class_="form-control form-remedy") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.catagories.label }}
+		{{ form.catagories(class_="checkbox") }}
+	</div>
+
+	<div class="form-group">
+		{{ form.other.label }}
+		<p class="help-block">{{ form.other.description }}</p>
+		{{ form.other(class_="form-control form-remedy") }}
+	</div>
+
 	<h3>Your Experience</h3> 
 
 	<div class="form-group clearfix">
